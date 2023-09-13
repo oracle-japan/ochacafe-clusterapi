@@ -26,7 +26,7 @@ spec:
             - --cloud-provider=clusterapi
             - --kubeconfig=/mnt/kubeconfig
             - --clusterapi-cloud-config-authoritative
-            - --node-group-auto-discovery=clusterapi:clusterName=ocne-cluster-brandnew
+            - --node-group-auto-discovery=clusterapi:clusterName=kubeadm-cluster
           volumeMounts:
             - name: kubeconfig
               mountPath: /mnt
