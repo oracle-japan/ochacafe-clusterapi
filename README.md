@@ -68,10 +68,10 @@ clusterctl init --infrastructure oci --bootstrap ocne --control-plane ocne --boo
 
 ここでは、この後作成するKubeadmクラスタで利用するWorker Nodeのカスタムイメージを作成します。
 
-カスタムイメージはPackerというツールを利用して実施します。
-手順は[こちら](https://github.com/kubernetes-sigs/image-builder)を参考に実施してください。
-とりあえず試したい方は、[こちらでカスタムイメージを公開](https://objectstorage.us-ashburn-1.oraclecloud.com/p/8u0KE_tZsfnxAkDbQOUKuKTUv4Ifch1OvSWSA3bKw_6h6[…]japan/b/TestData/o/exported-image-20230829-1556)しているので、ご自身の環境にインポートしてください。
-インポートの方法は[こちら](https://docs.oracle.com/ja-jp/iaas/Content/Compute/Tasks/imageimportexport.htm#Importing)を参考に実施してください。
+カスタムイメージはPackerというツールを利用して実施します。　
+手順は[こちら](https://github.com/kubernetes-sigs/image-builder)を参考に実施してください。　　
+とりあえず試したい方は、[こちらでカスタムイメージを公開](https://objectstorage.us-ashburn-1.oraclecloud.com/p/8u0KE_tZsfnxAkDbQOUKuKTUv4Ifch1OvSWSA3bKw_6h6woBdyp6QSwauuHlYSMD/n/orasejapan/b/TestData/o/exported-image-20230829-1556)しているので、ご自身の環境にインポートしてください。　　
+インポートの方法は[こちら](https://docs.oracle.com/ja-jp/iaas/Content/Compute/Tasks/imageimportexport.htm#Importing)を参考に実施してください。　　
 
 ### Cluster APIで利用する環境変数の設定
 
@@ -135,7 +135,7 @@ clusterctl generate cluster oke-cluster --from ochacafe-cluster-api/clusterapi/o
 clusterctl describe cluster oke-cluster
 ```
 
-プロビジョニング完了までには10分ほどかかります。
+プロビジョニング完了までには10分ほどかかります。　　
 今回のManifestでは、ClusterResourceSetを利用してContainer Network InteerfaceとしてCalico、OCIのCloud Controller Managerも一緒にデプロイしています。
 
 ### OCNE on OCI Compute環境の構築
@@ -154,7 +154,7 @@ clusterctl generate cluster ocne-cluster --from ochacafe-cluster-api/clusterapi/
 clusterctl describe cluster ocne-cluster
 ```
 
-プロビジョニング完了までには10分ほどかかります。
+プロビジョニング完了までには10分ほどかかります。　　
 今回のManifestでは、ClusterResourceSetを利用してContainer Network InteerfaceとしてCalicoも一緒にデプロイしています。
 
 ### OKE環境の構築
