@@ -137,7 +137,17 @@ clusterctl describe cluster oke-cluster
 ```
 
 プロビジョニング完了までには10分ほどかかります。  
-今回のManifestでは、ClusterResourceSetを利用してContainer Network InteerfaceとしてCalico、OCIのCloud Controller Managerも一緒にデプロイしています。
+
+プロビジョニングしたクラスタのKubeconfigを取得する場合は以下のコマンドを実行します。  
+今回のManifestでは、ClusterResourceSetを利用してContainer Network InteerfaceとしてCalico、OCIのCloud Controller Managerも一緒にデプロイしています。  
+
+```sh
+clusterctl get kuebconfig kubeadm-cluster > kubeadm.config
+```
+
+```sh
+kubectl get node --kubeconfig kubeadm-cluster
+```
 
 ### OCNE on OCI Compute環境の構築
 
@@ -155,8 +165,16 @@ clusterctl generate cluster ocne-cluster --from ochacafe-cluster-api/clusterapi/
 clusterctl describe cluster ocne-cluster
 ```
 
-プロビジョニング完了までには10分ほどかかります。  
-今回のManifestでは、ClusterResourceSetを利用してContainer Network InteerfaceとしてCalicoも一緒にデプロイしています。
+プロビジョニングしたクラスタのKubeconfigを取得する場合は以下のコマンドを実行します。  
+今回のManifestでは、ClusterResourceSetを利用してContainer Network InteerfaceとしてCalico、OCIのCloud Controller Managerも一緒にデプロイしています。  
+
+```sh
+clusterctl get kuebconfig ocne-cluster > ocne.config
+```
+
+```sh
+kubectl get node --kubeconfig ocne-cluster
+```
 
 ### OKE環境の構築
 
@@ -175,9 +193,84 @@ clusterctl describe cluster oke-cluster
 ```
 
 プロビジョニング完了までには10分ほどかかります。
+プロビジョニングしたクラスタのKubeconfigを取得する場合は以下のコマンドを実行します。    
+
+```sh
+clusterctl get kuebconfig ocne-cluster > oke.config
+```
+
+```sh
+kubectl get node --kubeconfig oke-cluster
+```
 
 ### ヘルスチェック機能の動作確認
 
+ここでは、Cluster APIのヘルスチェックの動作確認をします。    
+今回はKubeadmクラスタのWorker Nodeに対してヘルスチェックの設定をしています。(もちろんControl Planeに対して設定することも可能です)  
+
+OCIコンソール画面でCompute一覧を開きます。  
+
+先ほど作成したKubeadmクラスタのWorker Nodeインスタンス(`kubeadm-cluster-md-0-xxxx`)を停止させます。  
+
+![](image/001.png) 
+
+`ただちに電源を切断することで、インスタンスを強制停止します。`にチェックを入れて、`インスタンスを強制停止`をクリックします。  
+
+![](image/002.png) 
+
+インスタンスが停止されます。  
+
+![](image/003.png) 
+
+今回はWorker NodeのステータスがReadyでない状態が1分以上継続するとタイムアウトする設定をしているので、1分ほど経過するとインスタンスが自動的に終了します。  
+
+![](image/004.png) 
+
+インスタンスが終了後に新たにWorker Nodeインスタンスがプロビジョニングされます。  
+これにより、自動的にクラスタが復旧します。  
+
+![](image/005.png) 
+
+### オートスケール
+
+ここでは、Cluster APIを利用したオートスケールを確認します。  
+
+まずは、Management ClusterがWorkload Clusterの状態を確認できるようにKubeconfigをSecretとして登録します。  
+今回は、Kubeadmクラスタを利用します。  
+登録するKubeconfigはKubeadmクラスタ作成時に取得したものです。 
+後ほどCluster Autoscaler用のDeploymentをkube-systemネームスペースにデプロイするため、kube-systemに対して登録します。  
+
+```sh
+kubectl create secret generic kubeconfig --from-file=kubeconfig=kubeadm.config -n kube-system
+```
+
+Cluster Autoscaler用のDeploymentをデプロイします。  
+
+```sh
+kubectl apply -f autoscaler/scale.yaml
+```
+
+Cluster Autoscalerを行うためにNGINXのPodをKubeadmクラスタにデプロイします。　　
+
+```sh
+kubectl apply -f autoscaler/workload/nginx.yaml -kubeconfig=kubeadm.config
+```
+
+デプロイするとリソース不足により、PendingのPodが発生します。  
+
+```sh
+$ kubectl get pods
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx-7bc465bf6f-6v2xz   0/1     Pending   0          25s
+nginx-7bc465bf6f-bpk6z   1/1     Running   0          25s
+nginx-7bc465bf6f-rbj6t   1/1     Running   0          25s
+nginx-7bc465bf6f-t28sl   0/1     Pending   0          25s
+nginx-7bc465bf6f-vjd66   1/1     Running   0          25s
+```
+
+しばらくすると新たにWorker Nodeが起動してくるのが確認できます。  
+
+![](image/006.png) 
 
 
 
