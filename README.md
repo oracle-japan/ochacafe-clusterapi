@@ -253,13 +253,13 @@ kubectl apply -f autoscaler/scale.yaml
 Cluster Autoscalerを行うためにNGINXのPodをKubeadmクラスタにデプロイします。　　
 
 ```sh
-kubectl apply -f autoscaler/workload/nginx.yaml -kubeconfig=kubeadm.config
+kubectl apply -f autoscaler/workload/nginx.yaml --kubeconfig=kubeadm.config
 ```
 
 デプロイするとリソース不足により、PendingのPodが発生します。  
 
 ```sh
-$ kubectl get pods
+$ kubectl get pods --kubeconfig=kubeadm.config
 NAME                     READY   STATUS    RESTARTS   AGE
 nginx-7bc465bf6f-6v2xz   0/1     Pending   0          25s
 nginx-7bc465bf6f-bpk6z   1/1     Running   0          25s
