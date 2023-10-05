@@ -83,17 +83,17 @@ instance.compartment.id = '<コンパートメントOCID>'
 ポリシーは`clusterapi_policy`とします。  
 
 ```sh
-Allow dynamic-group project-tmm-evaluation_dynamic_group to manage instance-family in compartment tmm-evaluation	
-Allow dynamic-group project-tmm-evaluation_dynamic_group to manage virtual-network-family in compartment tmm-evaluation	
-Allow dynamic-group project-tmm-evaluation_dynamic_group to manage load-balancers in compartment tmm-evaluation	
-Allow dynamic-group project-tmm-evaluation_dynamic_group to use subnets in compartment tmm-evaluation	
-Allow dynamic-group project-tmm-evaluation_dynamic_group to inspect compartments in compartment tmm-evaluation	
-Allow dynamic-group project-tmm-evaluation_dynamic_group to use vnics in compartment tmm-evaluation	
-Allow dynamic-group project-tmm-evaluation_dynamic_group to use network-security-groups in compartment tmm-evaluation	
-Allow dynamic-group project-tmm-evaluation_dynamic_group to use private-ips in compartment tmm-evaluation	
-Allow dynamic-group project-tmm-evaluation_dynamic_group to manage public-ips in compartment tmm-evaluation	
-Allow dynamic-group project-tmm-evaluation_dynamic_group to use private-ips in compartment tmm-evaluation	 
-Allow dynamic-group project-tmm-evaluation_dynamic_group to manage cluster-family in compartment tmm-evaluation
+Allow dynamic-group clusteraapi-dyn-group to manage instance-family in compartment tmm-evaluation	
+Allow dynamic-group clusteraapi-dyn-group to manage virtual-network-family in compartment tmm-evaluation	
+Allow dynamic-group clusteraapi-dyn-group to manage load-balancers in compartment tmm-evaluation	
+Allow dynamic-group clusteraapi-dyn-group to use subnets in compartment tmm-evaluation	
+Allow dynamic-group clusteraapi-dyn-group to inspect compartments in compartment tmm-evaluation	
+Allow dynamic-group clusteraapi-dyn-group to use vnics in compartment tmm-evaluation	
+Allow dynamic-group clusteraapi-dyn-group to use network-security-groups in compartment tmm-evaluation	
+Allow dynamic-group clusteraapi-dyn-group to use private-ips in compartment tmm-evaluation	
+Allow dynamic-group clusteraapi-dyn-group to manage public-ips in compartment tmm-evaluation	
+Allow dynamic-group clusteraapi-dyn-group to use private-ips in compartment tmm-evaluation	 
+Allow dynamic-group clusteraapi-dyn-group to manage cluster-family in compartment tmm-evaluation
 ```
 
 ### Kubeadmクラスタ用のカスタムイメージの作成
