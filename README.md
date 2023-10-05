@@ -64,6 +64,38 @@ clusterctl init --infrastructure oci --bootstrap ocne --control-plane ocne --boo
 ## Workload Clusterの構築
 
 
+### ポリシーの設定
+
+Management ClusterであるOKEから各種クラスタをプロビジョニングできるようにポリシーを設定します。  
+
+#### 動的グループの作成
+
+[こちら](https://docs.oracle.com/ja-jp/iaas/Content/Identity/Tasks/managingdynamicgroups.htm)を参考に以下の動的グループを作成してください。  '
+動的グループ名は`clusteraapi-dyn-group`とします。  
+
+```sh
+instance.compartment.id = '<コンパートメントOCID>'
+```
+
+#### ポリシーの作成
+
+[こちら](hhttps://docs.oracle.com/ja-jp/iaas/Content/Identity/Tasks/managingpolicies.htm)を参考に以下のポリシーを作成してください。 
+ポリシーは`clusterapi_policy`とします。  
+
+```sh
+Allow dynamic-group project-tmm-evaluation_dynamic_group to manage instance-family in compartment tmm-evaluation	
+Allow dynamic-group project-tmm-evaluation_dynamic_group to manage virtual-network-family in compartment tmm-evaluation	
+Allow dynamic-group project-tmm-evaluation_dynamic_group to manage load-balancers in compartment tmm-evaluation	
+Allow dynamic-group project-tmm-evaluation_dynamic_group to use subnets in compartment tmm-evaluation	
+Allow dynamic-group project-tmm-evaluation_dynamic_group to inspect compartments in compartment tmm-evaluation	
+Allow dynamic-group project-tmm-evaluation_dynamic_group to use vnics in compartment tmm-evaluation	
+Allow dynamic-group project-tmm-evaluation_dynamic_group to use network-security-groups in compartment tmm-evaluation	
+Allow dynamic-group project-tmm-evaluation_dynamic_group to use private-ips in compartment tmm-evaluation	
+Allow dynamic-group project-tmm-evaluation_dynamic_group to manage public-ips in compartment tmm-evaluation	
+Allow dynamic-group project-tmm-evaluation_dynamic_group to use private-ips in compartment tmm-evaluation	 
+Allow dynamic-group project-tmm-evaluation_dynamic_group to manage cluster-family in compartment tmm-evaluation
+```
+
 ### Kubeadmクラスタ用のカスタムイメージの作成
 
 ここでは、この後作成するKubeadmクラスタで利用するWorker Nodeのカスタムイメージを作成します。
@@ -76,6 +108,9 @@ clusterctl init --infrastructure oci --bootstrap ocne --control-plane ocne --boo
 ### Cluster APIで利用する環境変数の設定
 
 ここでは、この後で利用する環境変数を設定していきます。
+
+[こちら](https://docs.oracle.com/ja-jp/iaas/Content/Identity/Tasks/managingdynamicgroups.htm)を参考に動的グループを作成します。
+ 
 
 env/envファイルの`CHANGE ME!!`項目を埋めます。
 
@@ -127,7 +162,7 @@ source env/env.sh
 以下のコマンドを実行だけで構築できます。
 
 ```sh
-clusterctl generate cluster oke-cluster --from ochacafe-cluster-api/clusterapi/oke.yaml |kubectl apply -f -
+clusterctl generate cluster oke-cluster --from ochacafe-cluster-api/clusterapi/oke.yaml |kubectl apply -f - --server-side
 ```
 
 以下のコマンドで状況を確認できます。
@@ -156,7 +191,7 @@ kubectl get node --kubeconfig kubeadm-cluster
 以下のコマンドを実行だけで構築できます。
 
 ```sh
-clusterctl generate cluster ocne-cluster --from ochacafe-cluster-api/clusterapi/ocne.yaml |kubectl apply -f -
+clusterctl generate cluster ocne-cluster --from ochacafe-cluster-api/clusterapi/ocne.yaml |kubectl apply -f - --server-side
 ```
 
 以下のコマンドで状況を確認できます。
