@@ -1,11 +1,9 @@
 #!/bin/bash
-export OCI_TENANCY_ID="CHANGE ME!!"!!
 export OCI_REGION="CHANGE ME!!"
 export OCI_COMPARTMENT_ID="CHANGE ME!!"
 export OCI_MANAGED_NODE_IMAGE_ID="CHANGE ME!!"
 export OCI_OCNE_IMAGE="CHANGE ME!!"
 export OCI_SSH_KEY="CHANGE ME!!"
-export OCI_TENANCY_ID_B64="$(echo -n "$OCI_TENANCY_ID" | base64 | tr -d '\n')"
 export OCI_REGION_B64="$(echo -n "$OCI_REGION" | base64 | tr -d '\n')"
 export USE_INSTANCE_PRINCIPAL="true"
 export USE_INSTANCE_PRINCIPAL_B64="$(echo -n "$USE_INSTANCE_PRINCIPAL" | base64 | tr -d '\n')"
