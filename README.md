@@ -9,6 +9,8 @@
 │   ├── scale.yaml
 │   └── workload
 │       └── nginx.yaml
+├── config
+│   └── starship.toml
 └── clusterapi
     ├── kubeadm.yaml
     ├── ocne.yaml

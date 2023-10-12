@@ -1,0 +1,57 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = true
+
+format = """
+[](#00fa9a)\
+$os\
+$username\
+[](fg:#00fa9a bg:#00fa9a)\
+$directory\
+[](fg:#DA627D bg:#FCA17D)\
+$git_branch\
+[](fg:#FCA17D bg:#06969A)\
+$kubernetes\
+[](fg:#4169e1 bg:#4169e1)\
+$time\
+[ ](fg:#66cdaa)\
+"""
+
+[username]
+show_always = true
+style_user = "bg:#00fa9a"
+style_root = "bg:#00fa9a"
+format = '[$user ]($style)'
+disabled = false
+
+# An alternative to the username module which displays a symbol that
+# represents the current operating system
+[os]
+style = "bg:#00fa9a"
+disabled = false
+
+[directory]
+style = "bg:#008b8b"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[kubernetes]
+style = "bg:#4169e1"
+symbol = "⎈"
+format = '[ $symbol ($context)/($namespace) $symbol ]($style)'
+disabled = false
+
+[git_branch]
+style = "bg:#FCA17D"
+format = '[ $branch ]($style)'
+
+[git_status]
+style = "bg:##9400d3"
+format = '[$all_status$ahead_behind ]($style)'
+
+[time]
+disabled = false
+time_format = "%R" # Hour:Minute Format
+style = "bg:#66cdaa"
+format = '[ ⏳ $time ]($style)'
